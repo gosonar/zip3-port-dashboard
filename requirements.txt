@@ -4,3 +4,4 @@ pgeocode
 geopy
 folium
 streamlit-folium
+openpyxl
