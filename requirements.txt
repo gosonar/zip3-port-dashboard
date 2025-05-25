@@ -2,4 +2,5 @@ streamlit
 pandas
 pgeocode
 geopy
+folium
 streamlit-folium
