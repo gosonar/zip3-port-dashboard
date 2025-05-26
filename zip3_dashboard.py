@@ -5,9 +5,7 @@ from folium.plugins import HeatMap
 from streamlit_folium import st_folium
 import io
 
-
 # 🔧 Optional: Reduce default padding
-
 st.markdown("""
     <style>
         .block-container {
@@ -31,9 +29,6 @@ st.markdown("""
         }
     </style>
 """, unsafe_allow_html=True)
-
-
-
 
 # --- Load Data ---
 df = pd.read_excel("zip3s_with_us_canada_ports.xlsx")
@@ -81,30 +76,19 @@ for _, row in filtered_df.iterrows():
 # --- Heatmap Layer ---
 HeatMap([zip3_centroids[z] for z in filtered_df['zip3_full'] if z in zip3_centroids]).add_to(m)
 
-
 # --- Display Map ---
-# Display Map (no extra columns or wrappers)
 from streamlit.components.v1 import html
 
 map_html = m.get_root().render()
-
-# Wrap it in a responsive container with forced size
 html(f"""
     <div style="width: 100%; height: 800px;">
         {map_html}
     </div>
 """, height=800)
 
-
-
-
-# Minimize heading size to avoid default spacing
+# --- Data Table ---
 st.markdown("#### Filtered ZIP3 Data")
-
-# Show the table
 st.dataframe(filtered_df)
-
-
 
 # --- Export Buttons ---
 
@@ -117,7 +101,7 @@ st.download_button(
     mime='text/csv'
 )
 
-# Excel
+# Excel (fixed with buffer)
 excel_buffer = io.BytesIO()
 with pd.ExcelWriter(excel_buffer, engine='openpyxl') as writer:
     filtered_df.to_excel(writer, index=False, sheet_name='ZIP3 Data')
@@ -129,6 +113,3 @@ st.download_button(
     file_name='filtered_zip3s.xlsx',
     mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 )
-
-
-
